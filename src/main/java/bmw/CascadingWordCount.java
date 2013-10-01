@@ -49,7 +49,7 @@ public class CascadingWordCount extends Configured implements org.apache.hadoop.
         Scheme sourceScheme = new TextLine(new Fields("line"));
         Tap source = new Hfs(sourceScheme, inputPath);
 
-        Scheme sinkScheme = new TextLine(TextLine.Compress.ENABLE);
+        Scheme sinkScheme = new TextLine();
         Tap sink = new Hfs(sinkScheme, outputPath, SinkMode.REPLACE);
 
         // the 'head' of the pipe assembly
@@ -63,7 +63,7 @@ public class CascadingWordCount extends Configured implements org.apache.hadoop.
         // For every Tuple group
         // count the number of occurrences of "word" and store result in
         // a field named "count"
-        assembly = new CountBy(assembly, new Fields("word"), new Fields("count"), 100000);
+        assembly = new CountBy(assembly, new Fields("word"), new Fields("count"), 5000000);
 
         Properties properties = new Properties();
         Iterator<Map.Entry<String, String>> iterator = getConf().iterator();
